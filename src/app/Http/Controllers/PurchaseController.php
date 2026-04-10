@@ -18,10 +18,6 @@ class PurchaseController extends Controller
 
     public function store(PurchaseRequest $request, $item_id) {
         $user = auth()->user();
-        if (Order::where('item_id', $item_id)->exists()) {
-            return redirect('/')
-                ->with('error', 'この商品はすでに購入されています。');
-        }
         $order = Order::create([
             'user_id' => $user->id,
             'item_id' => $item_id,

@@ -44,9 +44,16 @@
             <div class="address-detail">
                 @php
                     $address = $user->address ?? $user->profile;
+                    $profileEmpty = empty($address->postcode) && empty($address->address);
                 @endphp
+                <input type="hidden" name="address" value="{{ $profileEmpty ? '' : trim(($address->postcode ?? '') . ' ' . ($address->address ?? '') . ' ' . ($address->building ?? '')) }}">
                 <p class="address-detail__text">〒 {{ $address->postcode }}</p>
                 <p class="address-detail__text">{{ $address->address }}{{ $address->building }}</p>
+                <div class="form__error">
+                    @error('address')
+                        {{ $message }}
+                    @enderror
+                </div>
             </div>
         </div>
     </div>
@@ -71,7 +78,7 @@
                 @csrf
                 <input type="hidden" name="item_id" value="{{ $item->id }}">
                 <input type="hidden" class="payment-method-hidden" name="payment_method">
-                <input type="hidden" name="address" value="selected">
+                <input type="hidden" name="address" value="{{ $profileEmpty ? '' : trim(($address->postcode ?? '') . ' ' . ($address->address ?? '') . ' ' . ($address->building ?? '')) }}">
                 <button type="submit" class="order-button-submit">購入する</button>
             </form>
         </div>

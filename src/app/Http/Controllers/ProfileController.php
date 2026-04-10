@@ -13,12 +13,12 @@ class ProfileController extends Controller
     public function index(Request $request) {
         $user = auth()->user();
         $profile = $user->profile;
-        $sellingItems = Item::where('user_id', $user->id)->get();
-        $purchasedItems = Item::whereHas('order', function ($q) use ($user) {
+        $sellItems = Item::where('user_id', $user->id)->get();
+        $buyItems = Item::whereHas('order', function ($q) use ($user) {
             $q->where('user_id', $user->id);
         })->get();
 
-        return view('profile.index', compact('user', 'profile', 'sellingItems', 'purchasedItems'));
+        return view('profile.index', compact('user', 'profile', 'sellItems', 'buyItems'));
     }
 
     public function setup() {

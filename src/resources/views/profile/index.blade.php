@@ -22,12 +22,12 @@
         </div>
     </div>
     <div class="item-tabs">
-        <a href="{{ route('profile.index', ['tab' => 'selling']) }}" class="{{ request('tab') !== 'purchased' ? 'active' : '' }}">出品した商品</a>
-        <a href="{{ route('profile.index', ['tab' => 'purchased']) }}" class="{{ request('tab') === 'purchased' ? 'active' : '' }}">購入した商品</a>
+        <a href="{{ route('profile.index', ['tab' => 'sell']) }}" class="{{ request('tab') === 'sell' || request('tab') === null ? 'active' : '' }}">出品した商品</a>
+        <a href="{{ route('profile.index', ['tab' => 'buy']) }}" class="{{ request('tab') === 'buy' ? 'active' : '' }}">購入した商品</a>
     </div>
     <div class="item-list">
-        @if (request('tab') !== 'purchased')
-            @foreach($sellingItems as $item)
+        @if (request('tab') === 'sell' || request('tab') === null)
+            @foreach($sellItems as $item)
                 <div class="item-card-wrapper">
                     @if ($item->status == 1)
                         <a href="{{ url('/item/' . $item->id) }}" class="item-card">
@@ -44,8 +44,8 @@
                 </div>
             @endforeach
         @endif
-        @if (request('tab') === 'purchased')
-            @foreach($purchasedItems as $item)
+        @if (request('tab') === 'buy')
+            @foreach($buyItems as $item)
                 <div class="item-card-wrapper">
                     @if ($item->status == 1)
                         <a href="{{ url('/item/' . $item->id) }}" class="item-card">
