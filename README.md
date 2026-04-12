@@ -2,8 +2,9 @@
 ## 環境構築
 ### Dockerビルド
 1. `git clone git@github.com:mizuho-35/flea-market-app.git`
-2. `docker-compose up -d --build`
-MacのM1・M2チップのPCの場合、`no matching manifest for linux/arm64/v8 in the manifest list entries`のメッセージが表示されビルドができない場合があります。 エラーが発生する場合は、docker-compose.ymlファイルの「mysql」内に「platform」の項目を追加して記載してください
+2. `cd flea-market-app` ←クローンしたフォルダに移動
+3. `docker-compose up -d --build`
+- MacのM1・M2チップのPCの場合、`no matching manifest for linux/arm64/v8 in the manifest list entries`のメッセージが表示されビルドができない場合があります。 エラーが発生する場合は、docker-compose.ymlファイルの「mysql」内に「platform」の項目を追加して記載してください
 
 ```
 mysql:
@@ -11,6 +12,7 @@ mysql:
     image: mysql:8.0.26
     environment:
 ```
+
 ### Laravel環境構築
 1. `docker-compose exec php bash`
 2. `composer install`
