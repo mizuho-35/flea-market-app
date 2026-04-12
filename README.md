@@ -38,6 +38,10 @@ php artisan migrate
 ```
 php artisan db:seed
 ```
+8. 画像をstorageに保存する設定
+```
+php artisan storage:link
+```
 ## 使用技術（実行環境）
 - PHP 8.1
 - Laravel　8.83.29
