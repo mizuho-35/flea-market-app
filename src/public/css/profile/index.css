@@ -69,10 +69,15 @@
 }
 
 .item-list {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     padding: 70px;
-    gap: 70px;
+    gap: 20px;
+    justify-items: center;
+}
+
+.item-card-wrapper {
+    padding-bottom: 30px;
 }
 
 .item-card {

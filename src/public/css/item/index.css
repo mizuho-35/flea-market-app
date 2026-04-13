@@ -22,10 +22,15 @@
 }
 
 .item-list {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
     padding: 70px;
-    gap: 70px;
+    justify-items: center;
+}
+
+.item-card-wrapper {
+    padding-bottom: 30px;
 }
 
 .item-card {

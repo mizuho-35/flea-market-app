@@ -71,17 +71,16 @@ class ItemController extends Controller
     public function store(ExhibitionRequest $request) {
         $data = $request->validated();
         if ($request->hasFile('item_image')) {
-            $file = $request->file('item_image');
-            $path = $file->store('products', 'public');
-            $filename = basename($path);
-            $data['item_image'] = $filename;
+            $path = $request->file('item_image')->store('products', 'public');
+            $data['item_image'] = $path;
         }
-
         $data['category_list'] = implode(',', $request->categories);
         $data['user_id'] = auth()->id();
         $data['status'] = 0;
+
         Item::create($data);
         return redirect('/');
     }
+
 
 }

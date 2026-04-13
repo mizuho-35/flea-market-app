@@ -97,7 +97,7 @@ class ItemsTableSeeder extends Seeder
                 'price' => 2500,
                 'description' => '便利なメイクアップセット',
                 'condition' => '目立った傷や汚れなし',
-                'item_image' => '外出メイクアップセット.jpg'
+                'item_image' => 'makeup_pouch.jpg'
             ],
         ]);
     }
