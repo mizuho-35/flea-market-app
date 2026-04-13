@@ -34,7 +34,7 @@ class ItemsTableSeeder extends Seeder
                 'price' => 300,
                 'description' => '新鮮な玉ねぎ3束のセット',
                 'condition' => 'やや傷や汚れあり',
-                'image' => 'iLoveIMG+d.jpg'
+                'item_image' => 'iLoveIMG+d.jpg'
             ],
             [
                 'user_id' => 4,

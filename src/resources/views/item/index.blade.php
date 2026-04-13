@@ -20,12 +20,12 @@
             @if ($item->status == 1)
                 <a href="{{ url('/item/' . $item->id) }}" class="item-card sold">
                     <div class="sold-badge">SOLD</div>
-                    <img src="{{ asset('storage/products/' . $item->item_image) }}" alt="{{ $item->item_name }}" class="item-image">
+                    <img src="{{ asset('products/' . $item->item_image) }}" alt="{{ $item->item_name }}" class="item-image">
                     <div class="item-name">{{ $item->item_name }}</div>
                 </a>
             @else
                 <a href="{{ url('/item/' . $item->id) }}" class="item-card">
-                    <img src="{{ asset('storage/products/' . $item->item_image) }}" alt="{{ $item->item_name }}" class="item-image">
+                    <img src="{{ asset('products/' . $item->item_image) }}" alt="{{ $item->item_name }}" class="item-image">
                     <div class="item-name">{{ $item->item_name }}</div>
                 </a>
             @endif

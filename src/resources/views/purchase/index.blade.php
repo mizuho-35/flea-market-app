@@ -8,7 +8,7 @@
 <div class="order-page">
     <div class="order-detail">
         <div class="item">
-            <img src="{{ asset('storage/products/' . $item->item_image) }}" alt="{{ $item->item_name }}" class="item-image">
+            <img src="{{ asset('products/' . $item->item_image) }}" alt="{{ $item->item_name }}" class="item-image">
             <div class="item-detail">
                 <h2 class="item-name">{{ $item->item_name }}</h2>
                 <div class="item-price">

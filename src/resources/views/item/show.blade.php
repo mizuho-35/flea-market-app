@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="item-page">
-    <img src="{{ asset('storage/products/' . $item->item_image) }}" alt="{{ $item->item_name }}" class="item-image">
+    <img src="{{ asset('products/' . $item->item_image) }}" alt="{{ $item->item_name }}" class="item-image">
     <div class="item-detail">
         <h1 class="item-name">{{ $item->item_name }}</h1>
         <div class="item-brand">{{ $item->brand }}</div>
