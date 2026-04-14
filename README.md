@@ -66,7 +66,7 @@ php artisan storage:link
 - phpMyAdmin: http://localhost:8080/
 ---
 ## テストケース
-以下のユーザーを作成し、テストを実行した。
+以下のユーザーを作成し、テストを実行した。(テスト環境：windows11)
 - ユーザー名：テスト
 - メールアドレス：test@test.com
 - 郵便番号：000-0000
@@ -151,7 +151,7 @@ php artisan storage:link
 </details>
 <details>
 <summary>マイリストで検索結果を表示</summary>
-    
+    <img width="1920" height="1080" alt="スクリーンショット (93)" src="https://github.com/user-attachments/assets/d34f57e8-e173-47d0-8b12-4290202c59ed" />
 </details>
 
 ### 商品詳細画面
@@ -181,7 +181,7 @@ php artisan storage:link
 </details>
 <details>
 <summary>コメントが255文字以上の場合</summary>
-
+    <img width="1920" height="1080" alt="スクリーンショット (94)" src="https://github.com/user-attachments/assets/825be511-d349-46d8-9c61-cbb8b767657f" />
 </details>
 
 ### 商品購入画面
@@ -191,7 +191,8 @@ php artisan storage:link
 </details>
 <details>
 <summary>支払方法プルダウン・選択後の表示</summary>
-
+    <img width="1920" height="1080" alt="スクリーンショット (95)" src="https://github.com/user-attachments/assets/ab83fc89-3ba2-49c0-b2b2-f71e084fcfb0" />
+    <img width="1920" height="1080" alt="スクリーンショット (96)" src="https://github.com/user-attachments/assets/6c566a8d-5441-41d4-a76d-ef4cddb97e60" />
 </details>
 
 ### 配送先住所変更ページ
