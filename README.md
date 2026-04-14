@@ -12,6 +12,10 @@ mysql:
     image: mysql:8.0.26
     environment:
 ```
+- Windows/WSL2環境で、MySQLのコンテナが起動しない場合は以下を実行してください。
+1. Docker Desktop を完全に終了
+2. `cd ~/coachtech/flea-market-app`←flea-market-app のディレクトリに移動
+3. `rm -rf docker/mysql/data`←docker/mysql/dataの中身を削除
 
 ### Laravel環境構築
 1. `docker-compose exec php bash`
