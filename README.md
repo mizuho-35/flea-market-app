@@ -61,6 +61,12 @@ php artisan storage:link
 - MySQL 8.0.35
 - mailhog （SMTP:1025 / Web UI:8025）
 
+## ER図
+<details>
+<summary>ER図</summary>
+    <img width="820" height="1020" alt="index drawio" src="https://github.com/user-attachments/assets/a11ec417-0068-4562-92e9-5ec6831c0d9c" />
+</details>
+
 ## URL
 - 開発環境: http://localhost/
 - phpMyAdmin: http://localhost:8080/
