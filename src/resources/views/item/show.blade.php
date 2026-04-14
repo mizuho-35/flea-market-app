@@ -108,7 +108,7 @@
                 <form action="{{ route('comment.store') }}" method="POST" class="comment-form" novalidate>
                     @csrf
                     <input type="hidden" name="item_id" value="{{ $item->id }}">
-                    <textarea name="comment" class="comment-input" required></textarea>
+                    <textarea name="comment" class="comment-input" required>{{ old('comment') }}</textarea>
                     <div class="form__error">
                         @error('comment')
                             {{ $message }}

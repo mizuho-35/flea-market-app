@@ -105,12 +105,8 @@ document.getElementById('profile_image').addEventListener('change', function(e) 
 
     const reader = new FileReader();
     reader.onload = function(event) {
-
-        // 既存の preview を削除
         const preview = document.getElementById('preview-image');
         preview.remove();
-
-        // 新しい img を作成
         const img = document.createElement('img');
         img.id = 'preview-image';
         img.src = event.target.result;
@@ -118,8 +114,6 @@ document.getElementById('profile_image').addEventListener('change', function(e) 
         img.style.height = '100%';
         img.style.borderRadius = '50%';
         img.style.objectFit = 'cover';
-
-        // プレビューエリアに追加
         document.querySelector('.profile-image-preview').appendChild(img);
     };
     reader.readAsDataURL(file);

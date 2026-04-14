@@ -14,21 +14,40 @@ class ItemController extends Controller
 {
     public function index(Request $request) {
         $tab = $request->query('tab');
+        $keyword = $request->query('keyword');
+
         if ($tab === 'mylist') {
-            if (!auth()->check()) {
-                return redirect()->route('login');
+            if (auth()->check()) {
+                $items = auth()->user()
+                    ->likedItems()
+                    ->when($keyword, function ($query, $keyword) {
+                        return $query->where('item_name', 'LIKE', "%{$keyword}%");
+                    })
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
+            } else {
+                $items = collect();
             }
-            $items = auth()->user()->likedItems()->orderBy('updated_at', 'desc')->get();
         } else {
             if (auth()->check()) {
-                $items = Item::where('user_id', '!=', auth()->id())->orderBy('updated_at', 'desc')->get();
+                $items = Item::where('user_id', '!=', auth()->id())
+                    ->when($keyword, function ($query, $keyword) {
+                        return $query->where('item_name', 'LIKE', "%{$keyword}%");
+                    })
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
             } else {
-                $items = Item::orderBy('updated_at', 'desc')->get();
+                $items = Item::when($keyword, function ($query, $keyword) {
+                        return $query->where('item_name', 'LIKE', "%{$keyword}%");
+                    })
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
             }
         }
         $layout = auth()->check() ? 'layouts.app' : 'layouts.guest';
-        return view('item.index', compact('items', 'layout', 'tab'));
+        return view('item.index', compact('items', 'layout', 'tab', 'keyword'));
     }
+
 
     public function show($item_id) {
         $item = Item::findOrFail($item_id);

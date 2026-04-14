@@ -14,8 +14,8 @@ class ProfileController extends Controller
         $user = auth()->user();
         $profile = $user->profile;
         $sellItems = Item::where('user_id', $user->id)->get();
-        $buyItems = Item::whereHas('order', function ($q) use ($user) {
-            $q->where('user_id', $user->id);
+        $buyItems = Item::whereHas('order', function ($orderQuery) use ($user) {
+            $orderQuery->where('user_id', $user->id);
         })->get();
 
         return view('profile.index', compact('user', 'profile', 'sellItems', 'buyItems'));
