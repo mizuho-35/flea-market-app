@@ -71,14 +71,178 @@ php artisan storage:link
 - 開発環境: http://localhost/
 - phpMyAdmin: http://localhost:8080/
 ---
-## テストケース
-以下のユーザーを作成し、テストを実行した。(テスト環境：windows11)
-- ユーザー名：テスト
-- メールアドレス：test@test.com
-- 郵便番号：000-0000
-- 住所：住所
-- 建物名：建物
+## ユニットテスト環境構築・実行
+以下の手順で、ユニットテストを実行しました。
+1. テスト用データベースの作成
+- `docker exec -it flea-market-app-mysql-1 bash`
+- `mysql -u root -p`
+- `CREATE DATABASE demo_test;`
+2. configファイルの変更
+- config/database.phpのmysqlをコピーして以下のように修正
+```
+'mysql' => [
+// 中略
+],
 
+'mysql_test' => [
+            'driver' => 'mysql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => 'demo_test',
+            'username' => 'root',
+            'password' => 'root',
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+],
+
+```
+3. テスト用の.envファイルを作成
+- `docker-compose exec php bash`
+- `cp .env .env.testing`
+- 作成した.env.testingファイルのAPP_ENVとAPP_KEYを以下のように編集
+```
+APP_ENV=test
+APP_KEY=
+```
+- .env.testingファイルにデータベースの接続情報を加える
+```
+  DB_CONNECTION=mysql_test
+  DB_HOST=mysql
+  DB_PORT=3306
+- DB_DATABASE=laravel_db
+- DB_USERNAME=laravel_user
+- DB_PASSWORD=laravel_pass
++ DB_DATABASE=demo_test
++ DB_USERNAME=root
++ DB_PASSWORD=root
+
+```
+4. 以下のコマンドを実行
+- `php artisan key:generate --env=testing`←アプリケーションキーを作成
+- `php artisan config:clear`←キャッシュをクリア
+- `php artisan migrate --env=testing`←マイグレーションを実行
+5. phpunitの編集
+- phpunit.xmlの以下の部分を編集
+```
+-         <!-- <server name="DB_CONNECTION" value="sqlite"/> -->
+-         <!-- <server name="DB_DATABASE" value=":memory:"/> -->
++         <server name="DB_CONNECTION" value="mysql_test"/>
++         <server name="DB_DATABASE" value="demo_test"/>
+```
+6. テストファイルの作成
+- `php artisan make:test HelloTest`
+- 作成したHelloTest.phpを以下のように編集
+```
+class HelloTest extends TestCase
+{
+  public function testHello()
+  {
+    $this->assertTrue(true);
+
+    $arr = [];
+    $this->assertEmpty($arr);
+
+    $txt = "Hello World";
+    $this->assertEquals('Hello World', $txt);
+
+    $n = random_int(0, 100);
+    $this->assertLessThan(100, $n);
+  }
+}
+```
+- `php artisan config:clear`←キャッシュをクリア
+7. テストを実行
+`vendor/bin/phpunit tests/Feature/HelloTest.php`←OK (1 test, 4 assertion)と表示
+8. アクセスのテスト
+- Hellotest.phpを以下のように修正
+```
+public function testHello()
+  {
+    $this->assertTrue(true);
+
+-         $arr = [];
+-         $this->assertEmpty($arr);
+
+-         $txt = "Hello World";
+-         $this->assertEquals('Hello World', $txt);
+
+-         $n = random_int(0, 100);
+-         $this->assertLessThan(100, $n);
++         $response = $this->get('/');
++         $response->assertStatus(200);
+
++         $response = $this->get('/no_route');
++         $response->assertStatus(404);
+  }
+```
+9. テストを実行
+`vendor/bin/phpunit tests/Feature/HelloTest.php`←OK (1 test, 3 assertion)と表示
+10. データベースのテスト
+- Hellotest.phpを以下のように修正
+```
++ use App\Models\User;
+
+class HelloTest extends TestCase
+{
++   use RefreshDatabase;
+
+    public function testHello()
+    {
+-         $this->assertTrue(true);
+
+-         $response = $this->get('/');
+-         $response->assertStatus(200);
+
+-         $response = $this->get('/no_route');
+-         $response->assertStatus(404);
++         User::factory()->create([
++             'username'=>'aaa',
++             'email'=>'bbb@ccc.com',
++             'password'=>'test12345'
++         ]);
++         $this->assertDatabaseHas('users',[
++             'username'=>'aaa',
++             'email'=>'bbb@ccc.com',
++             'password'=>'test12345'
++         ]);
+    }
+}
+```
+11. テストを実行
+`vendor/bin/phpunit tests/Feature/HelloTest.php`←OK (1 test, 1 assertion)と表示
+## スケールテスト
+初年度でのユーザー数1000人達成を想定し、以下の手順でスケールテストを実行しました。
+1. テストファイルの作成
+- `php artisan make:test UserLoadTest`
+2. 作成したUserLoadTest.phpを以下のように編集
+```
+use App\Models\User;
+
+class UserLoadTest extends TestCase
+{
+    public function test_can_create_1000_users()
+    {
+        User::factory()->count(1000)->create();
+
+        $this->assertEquals(1000, User::count());
+    }
+}
+```
+3. テスト用DBを最新にする
+`php artisan migrate:fresh --env=testing`
+4. テストを実行
+`vendor/bin/phpunit tests/Feature/UserLoadTest.php`←OK (1 test, 1 assertion)と表示
+---
+## 画面設計
 ### 会員登録画面
 <details>
 <summary>会員登録画面にアクセス</summary>
